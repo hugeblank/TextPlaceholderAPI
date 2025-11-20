@@ -5,20 +5,20 @@ import eu.pb4.placeholders.api.ParserContext;
 import eu.pb4.placeholders.api.PlaceholderContext;
 import eu.pb4.placeholders.api.node.TextNode;
 import eu.pb4.placeholders.api.parsers.NodeParser;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.UUID;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.UUID;
 
 public final class HoverNode<T, H> extends SimpleStylingNode {
     private final Action<T, H> action;
@@ -162,7 +162,7 @@ public final class HoverNode<T, H> extends SimpleStylingNode {
         }
     }
 
-    public record LazyItemStackNodeContent<T>(ResourceLocation identifier, int count, DynamicOps<T> ops, T componentMap) {
+    public record LazyItemStackNodeContent<T>(Identifier identifier, int count, DynamicOps<T> ops, T componentMap) {
         public ItemStack toVanilla(HolderLookup.Provider lookup) {
             var stack = new ItemStack(lookup.lookupOrThrow(Registries.ITEM).getOrThrow(ResourceKey.create(Registries.ITEM, identifier)));
             stack.setCount(count);
