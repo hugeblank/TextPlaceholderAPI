@@ -80,7 +80,7 @@ tasks.withType(JavaCompile).configureEach {
 	// The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
 	// JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
 	// We'll use that if it's available, but otherwise we'll use the older option.
-	it.options.release = 21
+	it.options.release = 25
 }
 
 java {
@@ -103,8 +103,9 @@ def env = System.getenv()
 // configure the maven publication
 publishing {
 	publications {
-		mavenJava(MavenPublication) {
-			//artifactId = base.archivesName.get()
+		create("mavenJava", MavenPublication) {
+			artifactId = project.archives_base_name
+            from components.java
 			// add all the jars that should be included when publishing to maven
 		}
 	}
@@ -115,19 +116,17 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
-		repositories {
-			if (env.MAVEN_URL) {
-				maven {
-					credentials {
-						username env.MAVEN_USERNAME
-						password env.MAVEN_PASSWORD
-					}
-					url env.MAVEN_URL
-				}
-			} else {
-				mavenLocal()
-			}
-		}
+        if (env.MAVEN_URL) {
+            maven {
+                credentials {
+                    username env.MAVEN_USERNAME
+                    password env.MAVEN_PASSWORD
+                }
+                url env.MAVEN_URL
+            }
+        } else {
+            mavenLocal()
+        }
 	}
 }
 
